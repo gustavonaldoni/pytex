@@ -4,53 +4,79 @@ class LaTeX:
     _title: str = "Default LaTeX Title"
     _author: str = "Default LaTeX Author"
     _date: str = r"\today"
-    
-    document: str = ""
 
-    def set_document_class(self, new_document_class: str):
-        self._document_class = new_document_class
+    _document: str = ""
+
+    def set_document_class(self, document_class: str):
+        self._document_class = document_class
 
     def get_document_class(self) -> str:
         return self._document_class
 
-    def set_title(self, new_title: str):
-        self._title = new_title
+    def set_document_class_options(self, document_class_options: list[str]):
+        self._document_class_options = document_class_options
+
+    def get_document_class_options(self) -> list[str]:
+        return self._document_class_options
+
+    def set_title(self, title: str):
+        self._title = title
 
     def get_title(self) -> str:
         return self._title
 
-    def set_author(self, new_author: str):
-        self._author = new_author
+    def set_author(self, author: str):
+        self._author = author
 
     def get_title(self) -> str:
         return self._title
+
+    def set_document(self, document: str):
+        self._document = document
+
+    def get_document(self) -> str:
+        return self._document
+
+    def append_to_document(self, text: str):
+        self._document += text
 
     def document_class(self):
-        self.document += f"\\documentclass{{{self._document_class}}}\n"
+        options = ", ".join(self.get_document_class_options())
+        command = f"\\documentclass[{options}]{{{self._document_class}}}\n"
+
+        self.append_to_document(command)
 
     def title(self):
-        self.document += f"\\title{{{self._title}}}\n"
+        command = f"\\title{{{self._title}}}\n"
+        self.append_to_document(command)
 
     def author(self):
-        self.document += f"\\author{{{self._author}}}\n"
+        command = f"\\author{{{self._author}}}\n"
+        self.append_to_document(command)
 
     def date(self):
-        self.document += f"\\date{{{self._date}}}\n"
+        command = f"\\date{{{self._date}}}\n"
+        self.append_to_document(command)
 
     def input(self, arquivo: str):
-        self.document += f"\\input{{{arquivo}}}\n"
+        command = f"\\input{{{arquivo}}}\n"
+        self.append_to_document(command)
 
     def make_title(self):
-        self.document += f"\\maketitle\n"
+        command = f"\\maketitle\n"
+        self.append_to_document(command)
 
     def new_page(self):
-        self.document += f"\\newpage\n"
+        command = f"\\newpage\n"
+        self.append_to_document(command)
 
     def table_of_contents(self):
-        self.document += f"\\tableofcontents\n"
+        command = f"\\tableofcontents\n"
+        self.append_to_document(command)
 
     def section(self, section_title: str):
-        self.document += f"\\section{{{section_title}}}\n"
+        command = f"\\section{{{section_title}}}\n"
+        self.append_to_document(command)
 
     def enumerate(self, items: list):
         command = f"\\begin{{enumerate}}\n"
@@ -60,13 +86,15 @@ class LaTeX:
 
         command += f"\\end{{enumerate}}\n"
 
-        self.document += command
+        self.append_to_document(command)
 
     def begin_enumerate(self):
-        self.document += f"\\begin{{enumerate}}\n"
+        command = f"\\begin{{enumerate}}\n"
+        self.append_to_document(command)
 
     def end_enumerate(self):
-        self.document += f"\\end{{enumerate}}\n"
+        command = f"\\end{{enumerate}}\n"
+        self.append_to_document(command)
 
     def itemize(self, items: list):
         command = f"\\begin{{itemize}}\n"
@@ -76,29 +104,35 @@ class LaTeX:
 
         command += f"\\end{{itemize}}\n"
 
-        self.document += command
+        self.append_to_document(command)
 
     def begin_itemize(self):
-        self.document += f"\\begin{{itemize}}\n"
+        command = f"\\begin{{itemize}}\n"
+        self.append_to_document(command)
 
     def end_itemize(self):
-        self.document += f"\\end{{itemize}}\n"
+        command = f"\\end{{itemize}}\n"
+        self.append_to_document(command)
 
     def begin_document(self):
-        self.document += f"\\begin{{document}}\n"
+        command = f"\\begin{{document}}\n"
+        self.append_to_document(command)
 
     def end_document(self):
-        self.document += f"\\end{{document}}\n"
+        command = f"\\end{{document}}\n"
+        self.append_to_document(command)
 
     def begin_multicols(self, number_of_columns):
-        self.document += f"\\begin{{multicols}}{{{number_of_columns}}}\n"
+        command = f"\\begin{{multicols}}{{{number_of_columns}}}\n"
+        self.append_to_document(command)
 
     def end_multicols(self):
-        self.document += f"\\end{{multicols}}\n"
+        command = f"\\end{{multicols}}\n"
+        self.append_to_document(command)
 
     def save_tex_file(self, file_path: str):
         with open(file_path, "wb") as file:
-            file.write(self.document.encode("utf-8"))
-            
+            file.write(self.get_document().encode("utf-8"))
+
     def save_pdf_file(self, file_path: str):
         pass
