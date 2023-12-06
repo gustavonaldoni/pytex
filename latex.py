@@ -1,3 +1,6 @@
+import os
+from latexcompiler import LC
+
 class LaTeX:
     _document_class: str = "article"
     _document_class_options: list[str] = []
@@ -134,5 +137,15 @@ class LaTeX:
         with open(file_path, "wb") as file:
             file.write(self.get_document().encode("utf-8"))
 
-    def save_pdf_file(self, file_path: str):
-        pass
+    def save_pdf_file(self, tex_file_path: str):
+        full_tex_file_path = os.path.abspath(tex_file_path)
+        
+        self.save_tex_file(tex_file_path)
+        
+        LC.compile_document(
+        tex_engine="pdflatex",
+        bib_engine="biber",
+        no_bib=True,
+        path=full_tex_file_path,
+        folder_name="./result",
+    )
