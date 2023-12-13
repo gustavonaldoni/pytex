@@ -31,6 +31,7 @@ Eutidemo;Platão;50
 Crátilo;Platão;104
 Fédon;Platão;124
 A República;Platão;320
+Investigação e prova nos crimes cibernéticos;Escola de Magistrados da Justiça Federal da 3a Região;354
 Da Geração e da Corrupção seguido de Convite à Filosofia;Aristóteles;181
 Ética Protestante e o Espírito do Capitalismo;Max Weber;187
 Santo Tomás de Aquino - Iniciação ao estudo da sua figura e da sua obra;João Ameal;466

@@ -1,6 +1,7 @@
 import os
 from latexcompiler import LC
 
+
 class LaTeX:
     _document_class: str = "article"
     _document_class_options: list[str] = []
@@ -61,8 +62,8 @@ class LaTeX:
         command = f"\\date{{{self._date}}}\n"
         self.append_to_document(command)
 
-    def input(self, arquivo: str):
-        command = f"\\input{{{arquivo}}}\n"
+    def input(self, file_path: str):
+        command = f"\\input{{{file_path}}}\n"
         self.append_to_document(command)
 
     def make_title(self):
@@ -91,6 +92,10 @@ class LaTeX:
 
         self.append_to_document(command)
 
+    def item(self, item: str):
+        command = f"\\item{{{item}}}\n"
+        self.append_to_document(command)
+
     def begin_enumerate(self):
         command = f"\\begin{{enumerate}}\n"
         self.append_to_document(command)
@@ -117,6 +122,14 @@ class LaTeX:
         command = f"\\end{{itemize}}\n"
         self.append_to_document(command)
 
+    def begin_center(self):
+        command = f"\\begin{{center}}\n"
+        self.append_to_document(command)
+
+    def end_center(self):
+        command = f"\\end{{center}}\n"
+        self.append_to_document(command)
+
     def begin_document(self):
         command = f"\\begin{{document}}\n"
         self.append_to_document(command)
@@ -133,19 +146,34 @@ class LaTeX:
         command = f"\\end{{multicols}}\n"
         self.append_to_document(command)
 
+    def page_style(self, page_style: str):
+        command = f"\\pagestyle{{{page_style}}}\n"
+        self.append_to_document(command)
+
+    def use_package(self, package: str, package_options: list[str]):
+        options = ", ".join(package_options)
+        command = f"\\usepackage[{options}]{{{package}}}\n"
+
+        self.append_to_document(command)
+
+    def generic_command(self, command: str):
+        command = f"{command}\n"
+        self.append_to_document(command)
+
     def save_tex_file(self, file_path: str):
         with open(file_path, "wb") as file:
             file.write(self.get_document().encode("utf-8"))
 
-    def save_pdf_file(self, tex_file_path: str):
+    def save_pdf_file(self, tex_file_path: str, result_folder_path: str):
         full_tex_file_path = os.path.abspath(tex_file_path)
-        
+        full_result_folder_path = os.path.abspath(result_folder_path)
+
         self.save_tex_file(tex_file_path)
-        
+
         LC.compile_document(
-        tex_engine="pdflatex",
-        bib_engine="biber",
-        no_bib=True,
-        path=full_tex_file_path,
-        folder_name="./result",
-    )
+            tex_engine="pdflatex",
+            bib_engine="biber",
+            no_bib=True,
+            path=full_tex_file_path,
+            folder_name=full_result_folder_path,
+        )
